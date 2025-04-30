@@ -233,6 +233,41 @@ class Program
         }
     }
 
+    class PigeonHoleSort : Sorter
+    {
+        public PigeonHoleSort()
+            : base("PigeonHole") { }
+
+        public override int[] sort(int[] array)
+        {
+            int min = array.Min();
+            int max = array.Max();
+            int length = array.Length;
+
+            int index = 0;
+            int range = max - min + 1;
+            int[] transfer_arr = new int[range];
+
+            for (int i = 0; i < length; i += 1)
+            {
+                transfer_arr[array[i] - min] += 1;
+            }
+
+            for (int i = 0; i < range; i += 1)
+            {
+                while (transfer_arr[i] > 0)
+                {
+                    array[index] = i + min;
+
+                    index += 1;
+                    transfer_arr[i] -= 1;
+                }
+            }
+
+            return array;
+        }
+    }
+
     public static int[] DeepCopy(int[] d)
     {
         int[] c = new int[d.Length];
@@ -292,9 +327,9 @@ class Program
         sorters.Add(new QuickSort());
 
         //
-        // Quad Core - Implement heap sort
+        // Quad Core - Implement PigeonHole sort
         //
-        //sorters.Add (new heap());
+        sorters.Add(new PigeonHoleSort());
 
         // Iterate through all the sort routines on the three sets of data to compare the alogorithm speed
 
