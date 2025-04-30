@@ -185,6 +185,54 @@ class Program
         }
     }
 
+    class QuickSort : Sorter
+    {
+        public QuickSort()
+            : base("Quick") { }
+
+        public override int[] sort(int[] array)
+        {
+            //
+            // Implement the quick sort algo here.
+            //
+            return Inner(array, 0, array.Length - 1);
+        }
+
+        private static int[] Inner(int[] array, int low, int high)
+        {
+            if (low < high)
+            {
+                int partition = Partition(array, low, high);
+                Inner(array, low, partition - 1);
+                Inner(array, partition + 1, high);
+            }
+
+            return array;
+        }
+
+        private static int Partition(int[] array, int low, int high)
+        {
+            int pivot = array[high];
+
+            int i = low - 1;
+
+            // Move all elements that are smaller to the left side
+            for (int j = low; j <= high - 1; j++)
+            {
+                if (array[j] < pivot)
+                {
+                    i += 1;
+
+                    (array[i], array[j]) = (array[j], array[i]);
+                }
+            }
+
+            // Move pivot are smaller elements
+            (array[i + 1], array[high]) = (array[high], array[i + 1]);
+            return i + 1;
+        }
+    }
+
     public static int[] DeepCopy(int[] d)
     {
         int[] c = new int[d.Length];
@@ -241,7 +289,7 @@ class Program
 
         //
         // Dual Core - Implement Quick sort
-        //sorters.Add (new quick());
+        sorters.Add(new QuickSort());
 
         //
         // Quad Core - Implement heap sort
